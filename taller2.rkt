@@ -26,6 +26,12 @@
       (list 'bool-var v)
     )
   )
+;;Predicado bool-var
+(define bool-var?
+  (lambda(v)
+     (number? v)
+    )
+  )
 (define bool-var-list1  (list (bool-var 1)
                              (bool-var -2)
                              (bool-var 3))
@@ -57,6 +63,17 @@
          )
     )
   )
+;;Predicado clausula
+(define clausula?
+  (lambda(c)
+    (if (eqv? (list-length c ) 1)
+        (bool-var? (car c))
+        (and (eqv? (cadr c )'or) (clausula? (cddr c)))
+        )
+    )
+  )
+
+
 
 (define clau1 (clausula bool-var-list1))
 (define clau2 (clausula bool-var-list2))
@@ -69,6 +86,9 @@
 (define clau7 (clausula bool-var-list3))
 (define clau8 (clausula bool-var-list2))
 (define clau9 (clausula bool-var-list1))
+;;Probando clausula?
+(clausula? (list 1))
+(clausula? clau2)
 
 (define clau-list (list clau1
                         clau2
@@ -87,6 +107,16 @@
         )
       )
   )
+;;Predicado fnc-exp
+(define fnc-exp?
+  (lambda(fnc)
+       (if (eqv? (list-length fnc ) 1)
+        (clausula? (car fnc))
+        (and (eqv? (cadr fnc )'and) (fnc-exp? (cddr fnc)))
+        )
+      )
+  )
+
 ;;Extrae la clausula n de la fnc-exp l
 (define fnc-exp-get-clau
   (lambda(l n)
@@ -99,8 +129,11 @@
 (define fnc1 (fnc-exp clau-list))
 (define fnc2 (fnc-exp clau-list2))
 (define fnc3 (fnc-exp clau-list3))
-
-
+;;Probando fnc-exp?
+(fnc-exp? fnc1)
+(fnc-exp? fnc2)
+(fnc-exp? fnc3)
+(fnc-exp? (list clau1))
 ;;ejercicio 1.2
 
 
