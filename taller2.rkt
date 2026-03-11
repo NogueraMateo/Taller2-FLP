@@ -22,9 +22,7 @@
 ;; <fnc-exp>       ::= (<clausula>)
 ;;                 ::= <clausula> 'and <fnc-exp>
 (define bool-var
-  (lambda (v)
-      (list 'bool-var v)
-    )
+  (lambda (v) v)
   )
 ;;Predicado bool-var
 (define bool-var?
@@ -32,25 +30,23 @@
      (number? v)
     )
   )
-(define bool-var-list1  (list (bool-var 1)
-                             (bool-var -2)
-                             (bool-var 3))
+(define bool-var-list1  (list 1
+                             -2
+                              3)
   )
   
-(define bool-var-list2  (list (bool-var 1)
-                              (bool-var -2))
+(define bool-var-list2  (list  1
+                              -2)
   )
-(define bool-var-list3  (list (bool-var 1)
-                              (bool-var -2)
-                              (bool-var -3)
-                              (bool-var 4))
+(define bool-var-list3  (list  1
+                              -2
+                              -3
+                               4)
   )
 ;;Extrae la variable booleana
 (define list->get-var
-  (lambda (l)
-        (cadr l)
-    )
-  )
+  (lambda (v)v)
+ )
 
 (define var2 (list->get-var (car bool-var-list1)))
 
@@ -135,7 +131,11 @@
 (fnc-exp? fnc3)
 (fnc-exp? (list clau1))
 ;;ejercicio 1.2
-
+;;<bool-var> ::= (var number)
+;;<clausula> ::= (clau <bool-var>)
+;;           ::= (clau-or <bool-var> <clausula>)
+;;<fnc-exp>  ::= (fnc <clausula>)
+;;           ::= (fnc-and <clausula> <fnc-exp>)
 
 (define-datatype bool-var-type bool-var-type?
   (var (numero number?))
