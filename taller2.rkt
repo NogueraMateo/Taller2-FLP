@@ -18,9 +18,9 @@
 ;; <bool-var>      ::= number
 ;;                 ::= - number
 ;; <clausula>      ::= (<bool-var>)
-;;                 ::= (<bool-var> 'or <clausula>)
+;;                 ::= <bool-var> 'or <clausula>
 ;; <fnc-exp>       ::= (<clausula>)
-;;                 ::= (<clausula> 'and <fnc-exp>)
+;;                 ::= <clausula> 'and <fnc-exp>
 (define bool-var
   (lambda (v)
       (list 'bool-var v)
