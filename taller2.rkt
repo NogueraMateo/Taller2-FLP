@@ -54,8 +54,8 @@
 (define clausula
   (lambda (l)
     (if (eqv? (list-length l) 1)
-         (list  (list->get-var (car l)))
-         (cons  (list->get-var (car l))  (cons 'or (clausula (cdr l))))
+         (list  (bool-var (car l)))
+         (cons  (bool-var (car l))  (cons 'or (clausula (cdr l))))
          )
     )
   )
