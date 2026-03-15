@@ -255,7 +255,60 @@
     )
   )
 
+;; Convierte (var n) en n
+(define unparse-bool-var
+  (lambda (v)
+    (if (and (list? v)
+             (eqv? (car v) 'var)
+             (number? (cadr v)))
+        (cadr v)
+        (eopl:error 'unparse-bool-var
+                    "Bool-var abstracta invalida ~s"
+                    v))))
 
 
+(define unparse-list-of-bool-var
+  (lambda (lbv)
+    (cond
+      [(null? lbv) '()]
+      [else
+       (cons (unparse-bool-var (car lbv))
+             (unparse-list-of-bool-var (cdr lbv)))])))
 
+;; Convierte (clausula ((var 1) (var -2) (var 3)))
+;; en (1 or -2 or 3)
+(define unparse-clausula
+  (lambda (cl)
+    (if (and (list? cl)
+             (eqv? (car cl) 'clausula)
+             (list? (cadr cl)))
+        (clausula (unparse-list-of-bool-var (cadr cl)))
+        (eopl:error 'unparse-clausula
+                    "Clausula abstracta invalida ~s"
+                    cl))))
+
+
+;; Convierte
+;; (fnc-exp ((clausula ((var 1) (var -2) (var 3)))
+;;           (clausula ((var 1) (var -2)))))
+;; en
+;; ((1 or -2 or 3) and ((1 or -2)))
+(define unparse-list-of-clausulas
+  (lambda (lcl)
+    (cond
+      [(null? lcl) '()]
+      [else
+       (cons (unparse-clausula (car lcl))
+             (unparse-list-of-clausulas (cdr lcl)))])))
+
+
+(define UNPARSEBNF
+  (lambda (ast)
+    (if (and (list? ast)
+             (eqv? (car ast) 'fnc-exp)
+             (list? (cadr ast)))
+        (fnc-exp (unparse-list-of-clausulas (cadr ast)))
+        (eopl:error 'UNPARSEBNF
+                    "AST invalido ~s"
+                    ast))))
 
